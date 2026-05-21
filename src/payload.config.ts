@@ -43,7 +43,7 @@ export default buildConfig({
           accessKeyId: process.env.CLOUDINARY_API_KEY || '',
           secretAccessKey: process.env.CLOUDINARY_API_SECRET || '',
         },
-        endpoint: 'https://s3-upload.cloudinary.com', // ◄ Pipes requests to Cloudinary gateway
+        endpoint: 'https://cloudinary.com', // ◄ Pipes requests to Cloudinary gateway
         region: 'us-east-1', // Required by the SDK block, Cloudinary handles this internally
         forcePathStyle: true,
       },
