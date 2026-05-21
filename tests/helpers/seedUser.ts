@@ -24,6 +24,8 @@ export async function seedTestUser(): Promise<void> {
 
   // Create fresh test user
   await payload.create({
+    // override type checking
+    //@ts-ignore
     collection: 'users',
     data: testUser as any, // Casts data to bypass auth field strictness issues
   })
