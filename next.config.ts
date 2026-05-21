@@ -11,6 +11,10 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
+        hostname: 'res.cloudinary.com', // ◄ Allows Next.js to render your uploads
+      },
+      {
+        protocol: 'https',
         hostname: 'images.unsplash.com',
       },
       {

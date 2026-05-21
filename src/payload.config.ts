@@ -4,6 +4,7 @@ import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
+import { s3Storage } from '@payloadcms/storage-s3' 
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
@@ -31,5 +32,21 @@ export default buildConfig({
     url: process.env.DATABASE_URL || '',
   }),
   sharp,
-  plugins: [],
+  plugins: [
+    s3Storage({
+      collections: {
+        media: true, // Links your media collection
+      },
+      bucket: process.env.CLOUDINARY_CLOUD_NAME || '', 
+      config: {
+        credentials: {
+          accessKeyId: process.env.CLOUDINARY_API_KEY || '',
+          secretAccessKey: process.env.CLOUDINARY_API_SECRET || '',
+        },
+        endpoint: 'https://s3-upload.cloudinary.com', // ◄ Pipes requests to Cloudinary gateway
+        region: 'us-east-1', // Required by the SDK block, Cloudinary handles this internally
+        forcePathStyle: true,
+      },
+    }),
+  ],
 })
