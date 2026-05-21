@@ -9,13 +9,13 @@ export async function publishScheduledPosts() {
     const payload = await getPayload({ config })
 
     // Find posts that are scheduled and have reached their publish time
-    const now = new Date()
+    const now = new Date().toISOString()
     const scheduledPosts = await payload.find({
       collection: 'posts',
       where: {
         and: [
           { status: { equals: 'draft' } },
-          { scheduledPublishAt: { lessOrEqual: now } },
+          { scheduledPublishAt: { less_than_equal: now } },
         ],
       },
     })

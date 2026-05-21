@@ -102,7 +102,7 @@ export default function CategoryPage({
         </Link>
       </div>
     )
-  }
+  } 
 
   return (
     <div className="category-container" style={{ marginTop: '6rem' }}>
