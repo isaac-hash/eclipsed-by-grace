@@ -1,56 +1,52 @@
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import '../styles.css' // Import global styles for category classes
 import { getPayload } from 'payload'
-import configPromise from '@/payload.config'
-import '../styles.css'
+import payloadConfig from '../../../payload.config'
+import { headers } from 'next/headers'
+const payload = await getPayload({ config: payloadConfig })
 
 export const metadata = {
   title: 'Devotionals | Eclipsed By Grace',
   description: 'Explore our devotional categories.',
 }
 
-export default async function CategoryIndexPage() {
-  const payload = await getPayload({ config: configPromise })
-
-  // Fetch dynamic categories
-  const categoriesRes = await payload.find({
-    collection: 'categories',
-    depth: 1,
-  })
-
-  // Count published posts for each category
-  const categoriesWithCount = await Promise.all(
-    categoriesRes.docs.map(async (cat) => {
-      const postsRes = await payload.count({
-        collection: 'posts',
-        where: {
-          and: [
-            {
-              category: {
-                equals: cat.id,
-              },
-            },
-            {
-              status: {
-                equals: 'published',
-              },
-            },
-          ],
+// Fetch dynamic categories
+const categoriesRes = await payload.find({
+  collection: 'categories',
+  // limit: 4,
+  depth: 1,
+})
+// Count posts for each category
+const categoriesWithCount = await Promise.all(
+  categoriesRes.docs.map(async (cat) => {
+    const postsRes = await payload.count({
+      collection: 'posts',
+      where: {
+        category: {
+          equals: cat.id,
         },
-      })
-      return {
-        ...cat,
-        postCount: postsRes.totalDocs,
-      }
-    }),
-  )
+        status: {
+          equals: 'published',
+        },
+      },
+    })
+    return {
+      ...cat,
+      postCount: postsRes.totalDocs,
+    }
+  }),
+)
 
+export default function CategoryIndexPage() {
   return (
     <div className="page-container">
       <h1 className="page-title">Devotional Categories</h1>
       <div className="page-content" style={{ marginBottom: '3rem', textAlign: 'center' }}>
-        <p>Choose a topic to explore daily readings, scripture studies, and encouraging testimonies.</p>
+        <p>
+          Choose a topic to explore daily readings, scripture studies, and encouraging testimonies.
+        </p>
       </div>
 
       <div
@@ -62,14 +58,8 @@ export default async function CategoryIndexPage() {
             typeof cat.featuredImage === 'object' && cat.featuredImage?.url
               ? cat.featuredImage.url
               : 'https://images.unsplash.com/photo-1518602164578-cd0074062767?q=80&w=200&auto=format&fit=crop'
-
           return (
-            <Link
-              key={cat.id}
-              href={`/category/${cat.slug}`}
-              className="category-card"
-              style={{ border: '1px solid var(--color-border)', borderRadius: '8px' }}
-            >
+            <Link key={cat.id} href={`/category/${cat.slug}`} className="category-card">
               <div className="category-thumb">
                 <Image
                   src={imageUrl}
