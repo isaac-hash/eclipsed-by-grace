@@ -105,7 +105,7 @@ export default function CategoryPage({
   }
 
   return (
-    <div className="category-container">
+    <div className="category-container" style={{ marginTop: '6rem' }}>
       <Link href="/blog" className="back-link">
         ← Back to Blog
       </Link>
