@@ -3,6 +3,7 @@ import { Lora, Nunito } from 'next/font/google'
 import { Toaster } from 'sonner'
 import { Header } from '@/components/Header'
 import './styles.css'
+import { Analytics } from "@vercel/analytics/next"
 
 const lora = Lora({ 
   subsets: ['latin'],
