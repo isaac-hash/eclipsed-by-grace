@@ -4,7 +4,8 @@ import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
-import { s3Storage } from '@payloadcms/storage-s3' 
+import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob' // ◄ Import the official V3 engine
+
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
@@ -33,20 +34,11 @@ export default buildConfig({
   }),
   sharp,
   plugins: [
-    s3Storage({
+    vercelBlobStorage({
       collections: {
         media: true, // Links your media collection
       },
-      bucket: process.env.CLOUDINARY_CLOUD_NAME || '', 
-      config: {
-        credentials: {
-          accessKeyId: process.env.CLOUDINARY_API_KEY || '',
-          secretAccessKey: process.env.CLOUDINARY_API_SECRET || '',
-        },
-        endpoint: 'https://cloudinary.com', // ◄ Pipes requests to Cloudinary gateway
-        region: 'us-east-1', // Required by the SDK block, Cloudinary handles this internally
-        forcePathStyle: true,
-      },
+      token: process.env.BLOB_READ_WRITE_TOKEN || '', 
     }),
   ],
 })

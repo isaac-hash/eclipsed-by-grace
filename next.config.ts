@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'res.cloudinary.com', // ◄ Allows Next.js to render your uploads
+        hostname: '*.public.blob.vercel-storage.com',
       },
       {
         protocol: 'https',
