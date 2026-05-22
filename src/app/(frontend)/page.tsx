@@ -6,6 +6,10 @@ import config from '@/payload.config'
 import './styles.css'
 import Link from 'next/link'
 
+// Always fetch fresh data — never serve a stale cached version
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export default async function HomePage() {
   const headers = await getHeaders()
   const payloadConfig = await config
